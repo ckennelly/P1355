@@ -1,0 +1,98 @@
+<pre class='metadata'>
+Title: Exposing a narrow contract for ceil2
+Status: P
+Shortname: P1355
+Group: WG21
+Revision: 0
+Editor: Chris Kennelly, Google, ckennelly@google.com
+Date: 2018-11-24
+Audience: LEWG
+Audience: LWG
+Audience: SG6
+Abstract: ceil2 promises an unspecified value for out-of-bounds arguments.  Out-of-bounds arguments should instead be undefined behavior.
+URL: http://wg21.link/P1355R0
+Markup Shorthands: markdown yes
+Default Highlight: C++
+</pre>
+
+# Background # {#background}
+
+During the review of [[P0556R1]], LEWG requested `ceil2` return an unspecified
+value for out-of-bounds arguments.  [[P0556R3]] was adopted in Rapperswil with
+this specification.  [[N4778]] (24.6.4 "Integral powers of 2"):
+
+<blockquote>
+
+Returns: The minimal value `y` such that `ispow2(y)` is `true` and `y >= x`; if
+`y` is not representable as a value of type `T`, the result is an unspecified
+value.
+
+</blockquote>
+
+At the [[SAN]] meeting, LEWG took a poll reconsidering this decision at the
+request of SG6:
+
+<blockquote>
+Change ceil2 to hard UB, ill-formed in constexpr
+
+<table>
+<tr><th>SF</th><th>F</th><th>N</th><th>A</th><th>SA</th></tr>
+<tr><td>11</td><td>5</td><td>1</td><td>0</td><td>0</td></tr>
+</table>
+</blockquote>
+
+As discussed in [[P1233R0]] (out-of-bounds `shift_left` / `shift_right`),
+silently accepting out-of-bounds values can hide bugs.  Making this explicitly
+undefined behavior allows it to be detected and flagged by analysis tools.
+
+# Proposal # {#proposal}
+
+Wording relative to [[N4778]]:
+
+<blockquote>
+
+<xmp>
+template<class T>
+  constexpr T ceil2(T x) noexcept;
+</xmp>
+
+*   <ins>*Expects*: A value `y` representable as a value of type `T` exists where `ispow2(y)` is `true` and `y >= x`.</ins>
+*   *Returns*: The minimal value y such that ispow2(y) is true and y >= x<del>; if y is not representable as a value of type T, the result is an unspecified value</del>.
+*   *Remarks*: This function shall not participate in overload resolution unless T is an unsigned integer type ([basic.fundamental]).
+
+</blockquote>
+
+# Discussion # {#discussion}
+
+For values of `x` that fail to satisify the *Expects* precondition, this
+results in undefined behavior (15.5.4.11).
+
+<pre class=biblio>
+{
+    "N4778": {
+        "title": "Working Draft, Standard for Programming Language C++",
+	"date": "2018-10-08",
+	"href": "http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/n4778.pdf"
+    },
+    "P0556R1": {
+        "title": "P0556R1: Integral power-of-2 operations",
+	"href": "http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0556r1.html",
+	"date": "2017-03-19"
+    },
+    "P0556R3": {
+        "title": "P0556R3: Integral power-of-2 operations",
+	"href": "http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0556r3.html",
+	"date": "2018-06-06"
+    },
+    "P1233R0": {
+        "title": "Shift-by-negative in shift_left and shift_right",
+	"href": "http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1233r0.pdf",
+	"date": "2018-10-02"
+    },
+    "SAN": {
+    	"title": "Meeting minutes for P0556",
+	"href": "http://wiki.edg.com/bin/view/Wg21sandiego2018/P0556",
+	"date": "2018-11-09"
+    }
+}
+</pre>
