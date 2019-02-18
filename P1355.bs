@@ -51,10 +51,10 @@ Wording relative to [[N4791]]:
 
 <blockquote>
 
-<xmp>
+<pre>
 template<class T>
   constexpr T ceil2(T x) <del>noexcept</del>;
-</xmp>
+</pre>
 
 *   <ins>Let `N` be the smallest power of 2 greater than or equal to `x`.</ins>
 *   <ins>*Expects*: `N` is representable as a value of `T`.</ins>

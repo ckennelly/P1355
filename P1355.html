@@ -1230,7 +1230,7 @@ Possible extra rowspan handling
   <meta content="Bikeshed version 9c7b3c1bf4afcf8eca4fd3a1529a298ee35be006" name="generator">
   <link href="http://wg21.link/P1355R1" rel="canonical">
   <link href="https://isocpp.org/favicon.ico" rel="icon">
-  <meta content="d26210b71efa5c7fe32d5173913ea956a829ab35" name="document-revision">
+  <meta content="449574544dabb4876d59930d7b6e7a18ec1fae5d" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1515,9 +1515,9 @@ undefined behavior allows it to be detected and flagged by analysis tools.</p>
    <h2 class="heading settled" data-level="2" id="proposal"><span class="secno">2. </span><span class="content">Proposal</span><a class="self-link" href="#proposal"></a></h2>
    <p>Wording relative to <a data-link-type="biblio" href="#biblio-n4791">[N4791]</a>:</p>
    <blockquote>
-<pre class="highlight"><c- k>template</c-><c- o>&lt;</c-><c- k>class</c-> <c- nc>T</c-><c- o>></c->
-  <c- k>constexpr</c-> <c- n>T</c-> <c- n>ceil2</c-><c- p>(</c-><c- n>T</c-> <c- n>x</c-><c- p>)</c-> <c- o>&lt;</c-><c- n>del</c-><c- o>></c-><c- k>noexcept</c-><c- o>&lt;/</c-><c- n>del</c-><c- o>></c-><c- p>;</c->
-</pre>
+<pre class="highlight"><c- k>template</c-><class t>
+  <c- k>constexpr</c-> <c- n>T</c-> <c- nf>ceil2</c-><c- p>(</c-><c- n>T</c-> <c- n>x</c-><c- p>)</c-> <del><c- k>noexcept</c-></del><c- p>;</c->
+</class></pre>
     <ul>
      <li data-md>
       <ins>Let <code class="highlight"><c- n>N</c-></code> be the smallest power of 2 greater than or equal to <code class="highlight"><c- n>x</c-></code>.</ins>
